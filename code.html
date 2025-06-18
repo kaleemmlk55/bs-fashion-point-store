@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BS Fashion Point Project Downloader</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; padding: 2rem; background-color: #f5f5f5; text-align: center; }
+        .container { max-width: 600px; margin: 4rem auto; padding: 2rem; background: #fff; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { color: #333; }
+        p { color: #666; }
+        button { background-color: #007bff; color: white; border: none; padding: 15px 30px; font-size: 1.2rem; border-radius: 5px; cursor: pointer; transition: background-color 0.2s; }
+        button:hover { background-color: #0056b3; }
+        button:disabled { background-color: #cccccc; cursor: not-allowed; }
+        #status { margin-top: 1rem; color: #007bff; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>BS Fashion Point Project</h1>
+        <p>Click the button below to download all the project files as a single <code>.zip</code> archive.</p>
+        <button id="downloadBtn">Download bs-fashion-point.zip</button>
+        <p id="status"></p>
+    </div>
+
+<script>
+// --- FILE CONTENT: index.html ---
+const indexHtmlContent = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BS Fashion Point - Style Redefined</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fa-solid fa-vest-patches"></i> BS Fashion Point
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Shop</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">New Arrivals</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <a href="#" class="nav-link me-3"><i class="fa-solid fa-magnifying-glass"></i></a>
+                    <a href="#" class="nav-link">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span id="cart-count" class="badge rounded-pill bg-danger">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-section text-white text-center d-flex align-items-center justify-content-center">
+        <div class="container">
+            <h1 class="display-3">Style Redefined</h1>
+            <p class="lead">Discover the latest trends and timeless classics.</p>
+            <a href="#" class="btn btn-primary btn-lg mt-3">Shop Now</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container my-5">
+        <!-- Featured Products Section -->
+        <section id="featured-products">
+            <h2 class="text-center mb-4">Featured Products</h2>
+            <div class="row">
+                <!-- Product Card 1 -->
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="card h-100 product-card">
+                        <img src="https://via.placeholder.com/400x400.png?text=Modern+T-Shirt" class="card-img-top" alt="Product Image">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">Modern T-Shirt</h5>
+                            <p class="card-text text-muted">A comfortable and stylish tee for everyday wear.</p>
+                            <h6 class="card-subtitle mb-2 fw-bold">$29.99</h6>
+                            <button class="btn btn-dark mt-auto add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product Card 2 -->
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="card h-100 product-card">
+                        <img src="https://via.placeholder.com/400x400.png?text=Classic+Denim" class="card-img-top" alt="Product Image">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">Classic Denim Jeans</h5>
+                            <p class="card-text text-muted">Perfect fit denim for any occasion.</p>
+                            <h6 class="card-subtitle mb-2 fw-bold">$89.99</h6>
+                            <button class="btn btn-dark mt-auto add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product Card 3 -->
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="card h-100 product-card">
+                        <img src="https://via.placeholder.com/400x400.png?text=Leather+Jacket" class="card-img-top" alt="Product Image">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">Leather Biker Jacket</h5>
+                            <p class="card-text text-muted">A timeless piece that adds an edge to any outfit.</p>
+                            <h6 class="card-subtitle mb-2 fw-bold">$199.99</h6>
+                            <button class="btn btn-dark mt-auto add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product Card 4 -->
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="card h-100 product-card">
+                        <img src="https://via.placeholder.com/400x400.png?text=Stylish+Sneakers" class="card-img-top" alt="Product Image">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">Stylish Sneakers</h5>
+                            <p class="card-text text-muted">Combine comfort and style with these versatile sneakers.</p>
+                            <h6 class="card-subtitle mb-2 fw-bold">$129.99</h6>
+                            <button class="btn btn-dark mt-auto add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-5 pb-4">
+        <div class="container text-center text-md-start">
+            <div class="row">
+                <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mt-3">
+                    <h5 class="text-uppercase mb-4 fw-bold">BS Fashion Point</h5>
+                    <p>Your one-stop shop for modern and classic fashion. We believe in style, quality, and affordability.</p>
+                </div>
+                <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+                    <h5 class="text-uppercase mb-4 fw-bold">Categories</h5>
+                    <p><a href="#" class="text-white">Men</a></p>
+                    <p><a href="#" class="text-white">Women</a></p>
+                    <p><a href="#" class="text-white">Kids</a></p>
+                    <p><a href="#" class="text-white">Accessories</a></p>
+                </div>
+                <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+                    <h5 class="text-uppercase mb-4 fw-bold">Useful Links</h5>
+                    <p><a href="#" class="text-white">Your Account</a></p>
+                    <p><a href="#" class="text-white">Shipping Rates</a></p>
+                    <p><a href="#" class="text-white">Help</a></p>
+                </div>
+                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+                    <h5 class="text-uppercase mb-4 fw-bold">Contact</h5>
+                    <p><i class="fas fa-home me-3"></i> New York, NY 10012, US</p>
+                    <p><i class="fas fa-envelope me-3"></i> info@bsfashionpoint.com</p>
+                    <p><i class="fas fa-phone me-3"></i> + 01 234 567 88</p>
+                </div>
+            </div>
+            <hr class="mb-4">
+            <div class="row align-items-center">
+                <div class="col-md-7 col-lg-8">
+                    <p>© 2023 Copyright:
+                        <a href="#" class="text-white">BSFashionPoint.com</a>
+                    </p>
+                </div>
+                <div class="col-md-5 col-lg-4">
+                    <div class="text-center text-md-end">
+                        <ul class="list-unstyled list-inline">
+                            <li class="list-inline-item">
+                                <a href="#" class="btn-floating btn-sm text-white" style="font-size: 23px;"><i class="fab fa-facebook"></i></a>
+                            </li>
+                             <li class="list-inline-item">
+                                <a href="#" class="btn-floating btn-sm text-white" style="font-size: 23px;"><i class="fab fa-twitter"></i></a>
+                            </li>
+                             <li class="list-inline-item">
+                                <a href="#" class="btn-floating btn-sm text-white" style="font-size: 23px;"><i class="fab fa-instagram"></i></a>
+                            </li>
+                             <li class="list-inline-item">
+                                <a href="#" class="btn-floating btn-sm text-white" style="font-size: 23px;"><i class="fab fa-linkedin-in"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
+    <!-- Custom JS -->
+    <script src="js/main.js"></script>
+</body>
+</html>
+`;
+
+// --- FILE CONTENT: css/style.css ---
+const cssContent = `
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Navbar */
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.navbar-brand i {
+    color: #0d6efd; /* Bootstrap primary color */
+}
+
+#cart-count {
+    position: absolute;
+    top: 6px;
+    right: -8px;
+    font-size: 0.6em;
+}
+
+/* Hero Section */
+.hero-section {
+    height: 60vh;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://via.placeholder.com/1920x1080.png?text=Fashion+Banner') no-repeat center center;
+    background-size: cover;
+}
+
+.hero-section h1 {
+    font-weight: 700;
+}
+
+/* Product Cards */
+.product-card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border: none;
+    border-radius: 0.5rem;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.product-card .card-img-top {
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+.product-card .add-to-cart-btn {
+    border-radius: 2rem;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+}
+
+/* Footer */
+footer a {
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+footer a:hover {
+    color: #0d6efd !important;
+}
+`;
+
+// --- FILE CONTENT: js/main.js ---
+const jsContent = `
+document.addEventListener('DOMContentLoaded', function() {
+    
+    const cartCountElement = document.getElementById('cart-count');
+    const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+
+    let cartItemCount = 0;
+
+    // Function to update the cart count display
+    function updateCartCount() {
+        cartCountElement.textContent = cartItemCount;
+        if (cartItemCount > 0) {
+            cartCountElement.style.display = 'inline-block';
+        } else {
+            cartCountElement.style.display = 'none';
+        }
+    }
+
+    // Add event listeners to all "Add to Cart" buttons
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Increment the cart item count
+            cartItemCount++;
+
+            // Update the display
+            updateCartCount();
+
+            // Show a confirmation (you can replace this with a more sophisticated modal)
+            alert('Product added to cart!');
+        });
+    });
+
+    // Initialize cart count display on page load
+    updateCartCount();
+
+});
+`;
+
+// --- FILE CONTENT: README.md ---
+const readmeContent = `
+# BS Fashion Point - E-commerce Store Template
+
+Welcome to **BS Fashion Point**, a modern and responsive e-commerce website template. This project serves as a starting point for anyone looking to build a stylish online fashion store.
+
+![BS Fashion Point Screenshot](https://via.placeholder.com/1200x600.png?text=BS+Fashion+Point+Homepage)
+
+## ✨ Features
+
+- **Modern & Clean Design**: A professional look suitable for any fashion brand.
+- **Fully Responsive**: Looks great on desktops, tablets, and mobile phones.
+- **Built with Bootstrap 5**: Utilizes the latest version of the world's most popular frontend framework.
+- **Interactive Elements**: Includes a simulated "Add to Cart" feature with a dynamic cart counter.
+- **Easy to Customize**: Clean and well-commented code makes it simple to change text, images, and products.
+- **Font Awesome Icons**: Crisp and scalable vector icons for a polished finish.
+
+## 🚀 Getting Started
+
+This is a frontend-only template. No complex setup is required.
+
+1.  **Clone the repository:**
+    \`\`\`bash
+    git clone https://github.com/YOUR_USERNAME/bs-fashion-point.git
+    \`\`\`
+2.  **Navigate to the project directory:**
+    \`\`\`bash
+    cd bs-fashion-point
+    \`\`\`
+3.  **Open \`index.html\` in your browser:**
+    Simply double-click the \`index.html\` file or open it from your code editor with a live server extension.
+
+## 🛠️ Customization
+
+### Changing Text and Content
+
+All text can be modified directly in the \`index.html\` file.
+
+### Changing Images
+
+1.  Place your images in the \`/images\` folder.
+2.  Update the \`src\` attribute of the \`<img>\` tags in \`index.html\`. The current project uses placeholders from \`https://via.placeholder.com/\`.
+
+    **Example:**
+    \`\`\`html
+    <!-- Before -->
+    <img src="https://via.placeholder.com/400x400.png?text=Modern+T-Shirt" class="card-img-top" alt="Product Image">
+
+    <!-- After -->
+    <img src="images/my-t-shirt.jpg" class="card-img-top" alt="My Awesome T-Shirt">
+    \`\`\`
+
+### Changing Styles
+
+Modify colors, fonts, and spacing in the \`css/style.css\` file.
+
+## 💻 Technologies Used
+
+-   **HTML5**
+-   **CSS3**
+-   **JavaScript (ES6)**
+-   **Bootstrap 5**
+-   **Font Awesome**
+
+## 下一步 (Next Steps)
+
+This template is a great foundation. To turn it into a fully functional e-commerce store, you would need to:
+
+-   Implement a backend (e.g., using Node.js, Django, Ruby on Rails).
+-   Set up a database (e.g., PostgreSQL, MongoDB) to store products, users, and orders.
+-   Integrate a payment gateway (e.g., Stripe, PayPal).
+-   Build out user authentication and account pages.
+
+## 📄 License
+
+This project is open-source and available under the [MIT License](LICENSE).
+`;
+
+// --- FILE CONTENT: .gitignore ---
+const gitignoreContent = `
+# IDE and editor files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Node modules (for future expansion)
+node_modules/
+npm-debug.log
+`;
+
+
+// --- ZIP CREATION LOGIC ---
+document.getElementById('downloadBtn').addEventListener('click', function() {
+    const btn = this;
+    const status = document.getElementById('status');
+
+    btn.disabled = true;
+    status.textContent = 'Generating ZIP file... please wait.';
+
+    const zip = new JSZip();
+
+    // Add files to the zip
+    zip.file("index.html", indexHtmlContent);
+    zip.file("README.md", readmeContent);
+    zip.file(".gitignore", gitignoreContent);
+    zip.folder("css").file("style.css", cssContent);
+    zip.folder("js").file("main.js", jsContent);
+    
+    // Add an empty images folder for completeness
+    zip.folder("images");
+
+    // Generate the zip file and trigger download
+    zip.generateAsync({ type: "blob" })
+        .then(function(content) {
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(content);
+            link.download = "bs-fashion-point.zip";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            status.textContent = 'Download started successfully!';
+            setTimeout(() => { 
+                status.textContent = ''; 
+                btn.disabled = false;
+            }, 3000);
+        })
+        .catch(function(error) {
+            console.error(error);
+            status.textContent = 'An error occurred. Please check the console.';
+            btn.disabled = false;
+        });
+});
+</script>
+</body>
+</html>
